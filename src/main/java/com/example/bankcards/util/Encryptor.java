@@ -11,7 +11,6 @@ import java.util.Arrays;
 
 
 // TODO:
-//  - 2 secretKeys for card and password
 //  - test
 //  - refactor
 public class Encryptor {
