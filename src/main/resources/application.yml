@@ -6,3 +6,9 @@
   - Указать порт приложения.
   - Настроить параметры безопасности и JWT.
   - Включить Swagger UI.
+
+
+app:
+  jwt:
+    secret: a465a9bf0140a181a6a85da5358dd7c47aaaa610901bdbb9a02d64d06fa1eb26
+    expirationMs: 3600000
