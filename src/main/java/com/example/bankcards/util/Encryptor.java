@@ -22,7 +22,7 @@ public class Encryptor {
     private static final byte[] SECRET = "secretKey".getBytes();
 
 
-    public static String encrypt(String data) {
+    public String encrypt(String data) {
         try {
             Cipher cipher = Cipher.getInstance(ALGORITHM);
 
@@ -45,7 +45,7 @@ public class Encryptor {
         }
     }
 
-    public static String decrypt(String encrypted) {
+    public String decrypt(String encrypted) {
         try {
             Cipher cipher = Cipher.getInstance(ALGORITHM);
 
