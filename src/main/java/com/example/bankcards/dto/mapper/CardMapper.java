@@ -14,7 +14,7 @@ public interface CardMapper {
     )
     CardResponse toCardResponse(Card card);
 
-    default String maskCardNumber(int num) {
+    default String maskCardNumber(String num) {
         return "**** **** **** " + num;
     }
 }
