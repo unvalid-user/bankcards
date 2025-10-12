@@ -17,6 +17,8 @@ public class CardService {
     private CardRepository cardRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private Encryptor encryptor;
 
     // TODO: 403 instead of 404?
     public Card getCardById(Long cardId, Long userId) {
@@ -27,7 +29,7 @@ public class CardService {
     public Card createCard(CardRequest cardRequest) {
         Card card = Card.builder()
                 // TODO: check if card number already exists
-                .number(Encryptor.encrypt(cardRequest.cardNumber()))
+                .number(encryptor.encrypt(cardRequest.cardNumber()))
                 .maskedNumber(cardRequest.cardNumber().substring(12, 16))
                 .userId(userRepository.findByPhoneNumber(cardRequest.ownerPhoneNumber()).orElseThrow(() ->
                         new ResourceNotFoundException(USER, PHONE_NUMBER, cardRequest.ownerPhoneNumber())
