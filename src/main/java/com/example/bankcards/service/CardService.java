@@ -1,7 +1,8 @@
 package com.example.bankcards.service;
 
-import com.example.bankcards.dto.CardRequest;
+import com.example.bankcards.dto.CreateCardRequest;
 import com.example.bankcards.dto.CardResponse;
+import com.example.bankcards.dto.UpdateCardRequest;
 import com.example.bankcards.dto.mapper.CardMapper;
 import com.example.bankcards.entity.Card;
 import com.example.bankcards.exception.ResourceNotFoundException;
@@ -30,32 +31,64 @@ public class CardService {
     private CardMapper cardMapper;
 
     // TODO: 403 instead of 404?
-    public Card getCardById(Long cardId, Long userId) {
+    public Card findCardByIdAndUser(Long cardId, Long userId) {
         return cardRepository.findByIdAndUserId(cardId, userId).orElseThrow(() ->
                 new ResourceNotFoundException(CARD, ID, cardId));
     }
-
-    // TODO: userIdOrPhoneNumber?
-    public Card createCard(CardRequest cardRequest) {
-        Card card = Card.builder()
-                // TODO: check if card number already exists?
-                .number(encryptor.encrypt(cardRequest.cardNumber()))
-                .maskedNumber(cardRequest.cardNumber().substring(12, 16))
-                // TODO: transfer to UserService
-                .userId(userRepository.findByPhoneNumber(cardRequest.ownerPhoneNumber()).orElseThrow(() ->
-                        new ResourceNotFoundException(USER, PHONE_NUMBER, cardRequest.ownerPhoneNumber())
-                ).getId())
-                // TODO: validation
-                .expirationDate(cardRequest.expirationDate())
-                .build();
-
-        return cardRepository.save(card);
+    public CardResponse getCardById(Long cardId, Long userId) {
+        return cardMapper.toCardResponse(findCardByIdAndUser(cardId, userId));
+    }
+    public Card findCardById(Long cardId) {
+        return cardRepository.findById(cardId).orElseThrow(() ->
+                new ResourceNotFoundException(CARD, ID, cardId));
     }
 
-    public Page<CardResponse> getAllCardsWithFiler(Pageable pageable, CardFilter filter) {
-        Specification<Card> spec = CardSpecifications.withFilter(filter);
+    // TODO:
+    //  userIdOrPhoneNumber?
+    //  validation
+    public CardResponse createCard(CreateCardRequest createCardRequest) {
+        Card card = Card.builder()
+                // TODO: check if card number already exists?
+                .number(encryptor.encrypt(createCardRequest.cardNumber()))
+                .maskedNumber(createCardRequest.cardNumber().substring(12, 16))
+                // TODO: transfer to UserService
+                .userId(userRepository.findByPhoneNumber(createCardRequest.ownerPhoneNumber()).orElseThrow(() ->
+                        new ResourceNotFoundException(USER, PHONE_NUMBER, createCardRequest.ownerPhoneNumber())
+                ).getId())
+                .expirationDate(createCardRequest.expirationDate())
+                .build();
 
-        Page<Card> pagedCards = cardRepository.findAll(spec, pageable);
-        return pagedCards.map(cardMapper::toCardResponse);
+        return cardMapper.toCardResponse(cardRepository.save(card));
+    }
+
+    public Page<Card> findCardsWithSpecification(Pageable pageable, CardFilter filter) {
+        Specification<Card> spec = CardSpecifications.withFilter(filter);
+        return cardRepository.findAll(spec, pageable);
+    }
+
+    public Page<CardResponse> getCardsWithFilter(Pageable pageable, CardFilter filter) {
+        return findCardsWithSpecification(pageable, filter)
+                .map(cardMapper::toCardResponse);
+    }
+
+    public Page<CardResponse> getCardsByUserId(Pageable pageable, CardFilter filter, Long userId) {
+        filter.setUserId(userId);
+
+        return getCardsWithFilter(pageable, filter);
+    }
+
+    public void deleteCardById(Long cardId) {
+        Card card = findCardById(cardId);
+        cardRepository.delete(card);
+
+        if (cardRepository.existsById(cardId))
+            throw new IllegalStateException("Card was not deleted for some reason");
+    }
+
+    public CardResponse updateCard(Long cardId, UpdateCardRequest updateCardRequest) {
+        Card card = findCardById(cardId);
+        cardMapper.updateCardFromDto(updateCardRequest, card);
+
+        return cardMapper.toCardResponse(cardRepository.save(card));
     }
 }
