@@ -24,7 +24,7 @@ public class CardService {
     @Autowired
     private CardRepository cardRepository;
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
     @Autowired
     private Encryptor encryptor;
     @Autowired
@@ -51,10 +51,7 @@ public class CardService {
                 // TODO: check if card number already exists?
                 .number(encryptor.encrypt(createCardRequest.cardNumber()))
                 .maskedNumber(createCardRequest.cardNumber().substring(12, 16))
-                // TODO: transfer to UserService
-                .userId(userRepository.findByPhoneNumber(createCardRequest.ownerPhoneNumber()).orElseThrow(() ->
-                        new ResourceNotFoundException(USER, PHONE_NUMBER, createCardRequest.ownerPhoneNumber())
-                ).getId())
+                .userId(userService.findUserByPhoneNumber(createCardRequest.ownerPhoneNumber()).getId())
                 .expirationDate(createCardRequest.expirationDate())
                 .build();
 

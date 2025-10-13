@@ -1,4 +1,4 @@
-package com.example.bankcards.entity.card_request;
+package com.example.bankcards.entity.card_operation;
 
 import com.example.bankcards.entity.User;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -11,15 +11,15 @@ import lombok.Setter;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "type")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = BlockCardRequest.class, name = "BLOCK")
+        @JsonSubTypes.Type(value = BlockCardOperation.class, name = "BLOCK")
 })
 @Entity
-@Table(name = "card_requests")
+@Table(name = "card_operations")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class CardRequest {
+public abstract class CardOperation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,9 +33,9 @@ public abstract class CardRequest {
 
     // message?
 
-    private CardRequestStatus status = CardRequestStatus.PENDING;
+    private CardOperationStatus status = CardOperationStatus.PENDING;
 
-    protected CardRequest(Long userId) {
+    protected CardOperation(Long userId) {
         this.userId = userId;
     }
 }

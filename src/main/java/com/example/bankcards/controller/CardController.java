@@ -3,11 +3,11 @@ package com.example.bankcards.controller;
 import com.example.bankcards.dto.CreateCardRequest;
 import com.example.bankcards.dto.CardResponse;
 import com.example.bankcards.dto.UpdateCardRequest;
-import com.example.bankcards.entity.card_request.BlockCardRequest;
-import com.example.bankcards.entity.card_request.CardRequest;
+import com.example.bankcards.entity.card_operation.BlockCardOperation;
+import com.example.bankcards.entity.card_operation.CardOperation;
 import com.example.bankcards.repository.specification.CardFilter;
 import com.example.bankcards.security.UserPrincipal;
-import com.example.bankcards.service.CardRequestService;
+import com.example.bankcards.service.CardOperationService;
 import com.example.bankcards.service.CardService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class CardController {
     @Autowired
     private CardService cardService;
     @Autowired
-    private CardRequestService cardRequestService;
+    private CardOperationService cardOperationService;
 
     @GetMapping("/{id}")
     public ResponseEntity<CardResponse> getCardById(
@@ -54,23 +54,23 @@ public class CardController {
         return ResponseEntity.ok(pagedCards);
     }
 
-    // TODO: CardRequestController?
+    // TODO: CardOperationController?
     @PostMapping("/{id}/request-block")
     @Secured("ROLE_USER")
-    public ResponseEntity<CardRequest> requestBlockCard(
+    public ResponseEntity<CardOperation> operationBlockCard(
             @PathVariable("id") Long cardId,
             @AuthenticationPrincipal UserPrincipal userPrincipal
     ) {
-        BlockCardRequest createdCardRequest = cardRequestService.createBlockCardRequest(cardId, userPrincipal);
+        BlockCardOperation createdCardOperation = cardOperationService.createBlockCardOperation(cardId, userPrincipal);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
-                .path("/card-requests/{id}")
-                .buildAndExpand(createdCardRequest.getId())
+                .path("/card-operations/{id}")
+                .buildAndExpand(createdCardOperation.getId())
                 .toUri();
 
         return ResponseEntity.created(location)
-                .body(createdCardRequest);
+                .body(createdCardOperation);
     }
 
     @PostMapping
