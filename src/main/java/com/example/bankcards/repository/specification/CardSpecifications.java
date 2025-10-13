@@ -8,9 +8,9 @@ import org.springframework.data.jpa.domain.Specification;
 public class CardSpecifications {
     public static Specification<Card> withFilter(CardFilter filter) {
         return Specification.allOf(
-                withMaskedNumber(filter.maskedNumber()),
-                withUserId(filter.userId()),
-                withStatus(filter.status())
+                withMaskedNumber(filter.getMaskedNumber()),
+                withUserId(filter.getUserId()),
+                withStatus(filter.getStatus())
         );
     }
 

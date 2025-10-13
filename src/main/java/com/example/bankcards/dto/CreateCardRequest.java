@@ -2,7 +2,7 @@ package com.example.bankcards.dto;
 
 import java.time.LocalDate;
 
-public record CardRequest(
+public record CreateCardRequest(
     String cardNumber,
     String ownerPhoneNumber,
     LocalDate expirationDate

@@ -18,14 +18,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByPhoneNumber(username)
-                .orElseThrow(() -> new ResourceNotFoundException(USER, PHONE_NUMBER, username));
+        User user = userRepository.findByPhoneNumber(username).orElseThrow(() ->
+                new ResourceNotFoundException(USER, PHONE_NUMBER, username));
         return UserPrincipal.build(user);
     }
 
     public UserDetails loadUserById(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException(USER, ID, userId));
+        User user = userRepository.findById(userId).orElseThrow(() ->
+                new ResourceNotFoundException(USER, ID, userId));
         return UserPrincipal.build(user);
     }
 }
