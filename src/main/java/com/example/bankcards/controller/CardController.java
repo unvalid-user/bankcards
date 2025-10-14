@@ -1,8 +1,8 @@
 package com.example.bankcards.controller;
 
-import com.example.bankcards.dto.CreateCardRequest;
-import com.example.bankcards.dto.CardResponse;
-import com.example.bankcards.dto.UpdateCardRequest;
+import com.example.bankcards.dto.card.CreateCardRequest;
+import com.example.bankcards.dto.card.CardResponse;
+import com.example.bankcards.dto.card.UpdateCardRequest;
 import com.example.bankcards.entity.card_operation.BlockCardOperation;
 import com.example.bankcards.entity.card_operation.CardOperation;
 import com.example.bankcards.repository.specification.CardFilter;
@@ -23,6 +23,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 import static com.example.bankcards.util.AppConst.DEFAULT_PAGE_SIZE;
+
+// TODO:
+//  - restrict sort params
+//  - add card transactions
 
 @RestController
 @RequestMapping("/cards")
@@ -90,9 +94,6 @@ public class CardController {
                 .body(createdCard);
     }
 
-    // TODO:
-    //  @RequestParam Sort
-    //  Validation
     @GetMapping("/all")
     @Secured("ROLE_ADMIN")
     public ResponseEntity<Page<CardResponse>> getAllCards(
