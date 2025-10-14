@@ -1,5 +1,6 @@
 package com.example.bankcards.exception;
 
+import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,14 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(ResourceAlreadyExists.class)
     public ResponseEntity<String> resolveException(ResourceAlreadyExists exception) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(exception.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<String> resolveException(ConflictException exception) {
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
                 .body(exception.getMessage());

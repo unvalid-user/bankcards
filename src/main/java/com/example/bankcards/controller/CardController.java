@@ -47,7 +47,6 @@ public class CardController {
     }
 
     @GetMapping
-    @Secured("ROLE_USER")
     public ResponseEntity<Page<CardResponse>> getCardsByUser(
             @PageableDefault(size = DEFAULT_PAGE_SIZE) Pageable pageable,
             @ModelAttribute CardFilter cardFilter,
@@ -60,7 +59,6 @@ public class CardController {
 
     // TODO: CardOperationController?
     @PostMapping("/{id}/request-block")
-    @Secured("ROLE_USER")
     public ResponseEntity<CardOperation> operationBlockCard(
             @PathVariable("id") Long cardId,
             @AuthenticationPrincipal UserPrincipal userPrincipal
