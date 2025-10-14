@@ -37,8 +37,10 @@ public class Card {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private CardStatus status;
+    @Builder.Default
+    private CardStatus status = CardStatus.BLOCKED;
 
     @Column
+    @Builder.Default
     private BigDecimal balance = BigDecimal.ZERO;
 }

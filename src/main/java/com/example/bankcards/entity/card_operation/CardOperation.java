@@ -33,6 +33,8 @@ public abstract class CardOperation {
 
     // message?
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private CardOperationStatus status = CardOperationStatus.PENDING;
 
     protected CardOperation(Long userId) {
