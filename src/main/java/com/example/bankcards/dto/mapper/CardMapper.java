@@ -1,8 +1,8 @@
 package com.example.bankcards.dto.mapper;
 
 import com.example.bankcards.config.MapStructConfig;
-import com.example.bankcards.dto.CardResponse;
-import com.example.bankcards.dto.UpdateCardRequest;
+import com.example.bankcards.dto.card.CardResponse;
+import com.example.bankcards.dto.card.UpdateCardRequest;
 import com.example.bankcards.entity.Card;
 import org.mapstruct.*;
 
@@ -14,7 +14,6 @@ public interface CardMapper {
     )
     CardResponse toCardResponse(Card card);
 
-    // TODO: test
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateCardFromDto(UpdateCardRequest dto, @MappingTarget Card card);
 

@@ -1,14 +1,12 @@
 package com.example.bankcards.service;
 
-import com.example.bankcards.dto.CreateCardRequest;
-import com.example.bankcards.dto.CardResponse;
-import com.example.bankcards.dto.UpdateCardRequest;
+import com.example.bankcards.dto.card.CreateCardRequest;
+import com.example.bankcards.dto.card.CardResponse;
+import com.example.bankcards.dto.card.UpdateCardRequest;
 import com.example.bankcards.dto.mapper.CardMapper;
 import com.example.bankcards.entity.Card;
-import com.example.bankcards.entity.CardStatus;
 import com.example.bankcards.exception.ResourceNotFoundException;
 import com.example.bankcards.repository.CardRepository;
-import com.example.bankcards.repository.UserRepository;
 import com.example.bankcards.repository.specification.CardFilter;
 import com.example.bankcards.repository.specification.CardSpecifications;
 import com.example.bankcards.util.Encryptor;
@@ -31,7 +29,6 @@ public class CardService {
     @Autowired
     private CardMapper cardMapper;
 
-    // TODO: 403 instead of 404?
     public Card findCardByIdAndUser(Long cardId, Long userId) {
         return cardRepository.findByIdAndUserId(cardId, userId).orElseThrow(() ->
                 new ResourceNotFoundException(CARD, ID, cardId));
@@ -46,7 +43,6 @@ public class CardService {
 
     // TODO:
     //  userIdOrPhoneNumber?
-    //  validation
     public CardResponse createCard(CreateCardRequest createCardRequest) {
         Card card = Card.builder()
                 // TODO: check if card number already exists?

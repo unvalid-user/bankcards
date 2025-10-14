@@ -4,7 +4,6 @@ import com.example.bankcards.entity.Card;
 import com.example.bankcards.entity.CardStatus;
 import org.springframework.data.jpa.domain.Specification;
 
-// TODO: test
 public class CardSpecifications {
     public static Specification<Card> withFilter(CardFilter filter) {
         return Specification.allOf(

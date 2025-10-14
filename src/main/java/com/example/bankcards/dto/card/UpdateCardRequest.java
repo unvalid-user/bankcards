@@ -1,12 +1,14 @@
-package com.example.bankcards.dto;
+package com.example.bankcards.dto.card;
 
 import com.example.bankcards.entity.CardStatus;
 import jakarta.validation.constraints.Future;
 
 import java.time.LocalDate;
 
+import static com.example.bankcards.validation.ValidationMessage.EXPIRATION_DATE_MUST_BE_FUTURE;
+
 public record UpdateCardRequest (
-        @Future(message = "Expiration Date must be in the future")
+        @Future(message = EXPIRATION_DATE_MUST_BE_FUTURE)
         LocalDate expirationDate,
 
         CardStatus status
