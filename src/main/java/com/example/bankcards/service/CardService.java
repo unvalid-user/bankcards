@@ -5,6 +5,7 @@ import com.example.bankcards.dto.CardResponse;
 import com.example.bankcards.dto.UpdateCardRequest;
 import com.example.bankcards.dto.mapper.CardMapper;
 import com.example.bankcards.entity.Card;
+import com.example.bankcards.entity.CardStatus;
 import com.example.bankcards.exception.ResourceNotFoundException;
 import com.example.bankcards.repository.CardRepository;
 import com.example.bankcards.repository.UserRepository;
@@ -76,6 +77,7 @@ public class CardService {
 
     public void deleteCardById(Long cardId) {
         Card card = findCardById(cardId);
+        // TODO: should server delete card with balance > 0?
         cardRepository.delete(card);
 
         if (cardRepository.existsById(cardId))

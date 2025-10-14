@@ -118,7 +118,7 @@ public class CardController {
     @Secured("ROLE_ADMIN")
     public ResponseEntity<CardResponse> updateCard(
             @PathVariable("id") Long cardId,
-            @RequestBody UpdateCardRequest updateCardRequest
+            @Valid @RequestBody UpdateCardRequest updateCardRequest
     ) {
         CardResponse card = cardService.updateCard(cardId, updateCardRequest);
 
