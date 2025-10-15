@@ -33,7 +33,7 @@ public class UserService {
                 new ResourceNotFoundException(USER, PHONE_NUMBER, phoneNumber));
     }
 
-    public UserResponse createUser(CreateUserRequest createUserRequest) {
+    public User createUser(CreateUserRequest createUserRequest) {
         userShouldNotExistByPhoneNumber(createUserRequest.phoneNumber());
 
         User user = User.builder()
@@ -42,19 +42,18 @@ public class UserService {
                 .role(createUserRequest.role())
                 .build();
 
-        return userMapper.toUserResponse(userRepository.save(user));
+        return userRepository.save(user);
     }
 
-    public UserResponse getUserById(Long userId) {
-        return userMapper.toUserResponse(findUserById(userId));
+    public User getUserById(Long userId) {
+        return findUserById(userId);
     }
 
-    public Page<UserResponse> getUsersWithFilter(Pageable pageable, UserFilter userFilter) {
-        return findUsersWithSpecification(pageable, userFilter)
-                .map(userMapper::toUserResponse);
+    public Page<User> getUsersWithFilter(Pageable pageable, UserFilter userFilter) {
+        return findUsersWithSpecification(pageable, userFilter);
     }
 
-    public UserResponse updateUser(Long userId, UpdateUserRequest updateUserRequest) {
+    public User updateUser(Long userId, UpdateUserRequest updateUserRequest) {
         User user = findUserById(userId);
 
         if (updateUserRequest.phoneNumber() != null)
@@ -62,7 +61,7 @@ public class UserService {
 
         userMapper.updateUserFromDto(updateUserRequest, user);
 
-        return userMapper.toUserResponse(userRepository.save(user));
+        return userRepository.save(user);
     }
 
     private User findUserById(Long userId) {

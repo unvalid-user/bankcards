@@ -1,7 +1,6 @@
 package com.example.bankcards.service;
 
 import com.example.bankcards.dto.card.CreateCardRequest;
-import com.example.bankcards.dto.card.CardResponse;
 import com.example.bankcards.dto.card.UpdateCardRequest;
 import com.example.bankcards.dto.mapper.CardMapper;
 import com.example.bankcards.entity.Card;
@@ -25,16 +24,17 @@ public class CardService {
     @Autowired
     private UserService userService;
     @Autowired
-    private Encryptor encryptor;
-    @Autowired
     private CardMapper cardMapper;
+    @Autowired
+    private Encryptor encryptor;
+
 
     public Card findCardByIdAndUser(Long cardId, Long userId) {
         return cardRepository.findByIdAndUserId(cardId, userId).orElseThrow(() ->
                 new ResourceNotFoundException(CARD, ID, cardId));
     }
-    public CardResponse getCardById(Long cardId, Long userId) {
-        return cardMapper.toCardResponse(findCardByIdAndUser(cardId, userId));
+    public Card getCardById(Long cardId, Long userId) {
+        return findCardByIdAndUser(cardId, userId);
     }
     public Card findCardById(Long cardId) {
         return cardRepository.findById(cardId).orElseThrow(() ->
@@ -43,7 +43,7 @@ public class CardService {
 
     // TODO:
     //  userIdOrPhoneNumber?
-    public CardResponse createCard(CreateCardRequest createCardRequest) {
+    public Card createCard(CreateCardRequest createCardRequest) {
         Card card = Card.builder()
                 // TODO: check if card number already exists?
                 .number(encryptor.encrypt(createCardRequest.cardNumber()))
@@ -52,7 +52,7 @@ public class CardService {
                 .expirationDate(createCardRequest.expirationDate())
                 .build();
 
-        return cardMapper.toCardResponse(cardRepository.save(card));
+        return cardRepository.save(card);
     }
 
     public Page<Card> findCardsWithSpecification(Pageable pageable, CardFilter filter) {
@@ -60,12 +60,11 @@ public class CardService {
         return cardRepository.findAll(spec, pageable);
     }
 
-    public Page<CardResponse> getCardsWithFilter(Pageable pageable, CardFilter filter) {
-        return findCardsWithSpecification(pageable, filter)
-                .map(cardMapper::toCardResponse);
+    public Page<Card> getCardsWithFilter(Pageable pageable, CardFilter filter) {
+        return findCardsWithSpecification(pageable, filter);
     }
 
-    public Page<CardResponse> getCardsByUserId(Pageable pageable, CardFilter filter, Long userId) {
+    public Page<Card> getCardsByUserId(Pageable pageable, CardFilter filter, Long userId) {
         filter.setUserId(userId);
 
         return getCardsWithFilter(pageable, filter);
@@ -80,10 +79,10 @@ public class CardService {
             throw new IllegalStateException("Card was not deleted for some reason");
     }
 
-    public CardResponse updateCard(Long cardId, UpdateCardRequest updateCardRequest) {
+    public Card updateCard(Long cardId, UpdateCardRequest updateCardRequest) {
         Card card = findCardById(cardId);
         cardMapper.updateCardFromDto(updateCardRequest, card);
 
-        return cardMapper.toCardResponse(cardRepository.save(card));
+        return cardRepository.save(card);
     }
 }
