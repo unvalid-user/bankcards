@@ -4,6 +4,8 @@ import com.example.bankcards.dto.card.CreateCardRequest;
 import com.example.bankcards.dto.card.UpdateCardRequest;
 import com.example.bankcards.dto.mapper.CardMapper;
 import com.example.bankcards.entity.Card;
+import com.example.bankcards.entity.CardStatus;
+import com.example.bankcards.exception.BadRequestException;
 import com.example.bankcards.exception.ResourceNotFoundException;
 import com.example.bankcards.repository.CardRepository;
 import com.example.bankcards.repository.specification.CardFilter;
@@ -14,6 +16,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
 
 import static com.example.bankcards.util.AppConst.*;
 
@@ -84,5 +89,29 @@ public class CardService {
         cardMapper.updateCardFromDto(updateCardRequest, card);
 
         return cardRepository.save(card);
+    }
+
+    @Transactional
+    public void transferMoney(Long sourceCardId, Long destinationCardId, BigDecimal monetaryAmount, Long userId) {
+        Card sourceCard = findCardByIdAndUser(sourceCardId, userId);
+        Card destinationCard = findCardByIdAndUser(destinationCardId, userId);
+
+        if (sourceCard.getBalance().compareTo(monetaryAmount) < 0)
+            throw new BadRequestException("Insufficient balance");
+
+        cardStatusShouldBeActive(sourceCard);
+        cardStatusShouldBeActive(destinationCard);
+
+        sourceCard.setBalance(sourceCard.getBalance().subtract(monetaryAmount));
+        destinationCard.setBalance(destinationCard.getBalance().add(monetaryAmount));
+
+        cardRepository.save(sourceCard);
+        cardRepository.save(destinationCard);
+    }
+
+    private void cardStatusShouldBeActive(Card card) {
+        if (card.getStatus() != CardStatus.ACTIVE)
+            throw new BadRequestException(String.format("Card *%s is %s",
+                    card.getMaskedNumber(), card.getStatus()));
     }
 }
