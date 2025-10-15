@@ -3,6 +3,8 @@ package com.example.bankcards.controller;
 import com.example.bankcards.dto.card.CreateCardRequest;
 import com.example.bankcards.dto.card.CardResponse;
 import com.example.bankcards.dto.card.UpdateCardRequest;
+import com.example.bankcards.dto.card_operation.CardOperationResponse;
+import com.example.bankcards.dto.mapper.CardOperationMapper;
 import com.example.bankcards.entity.card_operation.BlockCardOperation;
 import com.example.bankcards.entity.card_operation.CardOperation;
 import com.example.bankcards.repository.specification.CardFilter;
@@ -35,6 +37,8 @@ public class CardController {
     private CardService cardService;
     @Autowired
     private CardOperationService cardOperationService;
+    @Autowired
+    private CardOperationMapper cardOperationMapper;
 
     @GetMapping("/{id}")
     public ResponseEntity<CardResponse> getCardById(
@@ -59,7 +63,7 @@ public class CardController {
 
     // TODO: CardOperationController?
     @PostMapping("/{id}/request-block")
-    public ResponseEntity<CardOperation> operationBlockCard(
+    public ResponseEntity<CardOperationResponse> requestBlockCard(
             @PathVariable("id") Long cardId,
             @AuthenticationPrincipal UserPrincipal userPrincipal
     ) {
@@ -72,7 +76,7 @@ public class CardController {
                 .toUri();
 
         return ResponseEntity.created(location)
-                .body(createdCardOperation);
+                .body(cardOperationMapper.toResponse(createdCardOperation));
     }
 
     @PostMapping

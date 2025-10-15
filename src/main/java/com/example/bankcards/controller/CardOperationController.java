@@ -1,5 +1,8 @@
 package com.example.bankcards.controller;
 
+import com.example.bankcards.dto.PagedResponse;
+import com.example.bankcards.dto.card_operation.CardOperationResponse;
+import com.example.bankcards.dto.mapper.CardOperationMapper;
 import com.example.bankcards.entity.card_operation.CardOperation;
 import com.example.bankcards.repository.specification.CardOperationFilter;
 import com.example.bankcards.service.CardOperationService;
@@ -19,34 +22,37 @@ import static com.example.bankcards.util.AppConst.DEFAULT_PAGE_SIZE;
 public class CardOperationController {
     @Autowired
     private CardOperationService cardOperationService;
+    @Autowired
+    private CardOperationMapper cardOperationMapper;
 
 
     @PatchMapping("/{id}/cancel")
-    public ResponseEntity<CardOperation> cancelCardOperation(
+    public ResponseEntity<CardOperationResponse> cancelCardOperation(
             @PathVariable("id") Long cardOperationId
     ) {
         CardOperation cardOperation = cardOperationService.cancelCardOperation(cardOperationId);
 
-        return ResponseEntity.ok(cardOperation);
+        return ResponseEntity.ok(cardOperationMapper.toResponse(cardOperation));
     }
 
     @PatchMapping("/{id}/complete")
-    public ResponseEntity<CardOperation> completeCardOperation(
+    public ResponseEntity<CardOperationResponse> completeCardOperation(
             @PathVariable("id") Long cardOperationId
     ) {
         CardOperation cardOperation = cardOperationService.completeCardOperation(cardOperationId);
 
-        return ResponseEntity.ok(cardOperation);
+        return ResponseEntity.ok(cardOperationMapper.toResponse(cardOperation));
     }
 
     // TODO: "type" field in JSON
     @GetMapping
-    public ResponseEntity<Page<CardOperation>> getAllCardOperations(
+    public ResponseEntity<PagedResponse<CardOperationResponse>> getAllCardOperations(
             @PageableDefault(size = DEFAULT_PAGE_SIZE) Pageable pageable,
             @ModelAttribute CardOperationFilter cardOperationFilter
     ) {
-        Page<CardOperation> pagedCardOperations = cardOperationService.getCardOperationsWithFilter(pageable, cardOperationFilter);
+        Page<CardOperation> pageCardOperations = cardOperationService
+                .getCardOperationsWithFilter(pageable, cardOperationFilter);
 
-        return ResponseEntity.ok(pagedCardOperations);
+        return ResponseEntity.ok(cardOperationMapper.toPagedResponse(pageCardOperations));
     }
 }
