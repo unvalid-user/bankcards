@@ -2,6 +2,7 @@ package com.example.bankcards.security;
 
 import com.example.bankcards.entity.User;
 import com.example.bankcards.exception.ResourceNotFoundException;
+import com.example.bankcards.exception.UnauthorizedException;
 import com.example.bankcards.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,15 +18,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByPhoneNumber(username).orElseThrow(() ->
-                new ResourceNotFoundException(USER, PHONE_NUMBER, username));
+    public UserDetails loadUserByUsername(String phoneNumber) throws UsernameNotFoundException {
+        User user = userRepository.findByPhoneNumber(phoneNumber).orElseThrow(() ->
+                new UnauthorizedException());
         return UserPrincipal.build(user);
     }
 
     public UserDetails loadUserById(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() ->
-                new ResourceNotFoundException(USER, ID, userId));
+                new UnauthorizedException());
         return UserPrincipal.build(user);
     }
 }
