@@ -1,12 +1,14 @@
 package com.example.bankcards.controller;
 
+import com.example.bankcards.dto.PagedResponse;
 import com.example.bankcards.dto.card.CreateCardRequest;
 import com.example.bankcards.dto.card.CardResponse;
 import com.example.bankcards.dto.card.UpdateCardRequest;
 import com.example.bankcards.dto.card_operation.CardOperationResponse;
+import com.example.bankcards.dto.mapper.CardMapper;
 import com.example.bankcards.dto.mapper.CardOperationMapper;
+import com.example.bankcards.entity.Card;
 import com.example.bankcards.entity.card_operation.BlockCardOperation;
-import com.example.bankcards.entity.card_operation.CardOperation;
 import com.example.bankcards.repository.specification.CardFilter;
 import com.example.bankcards.security.UserPrincipal;
 import com.example.bankcards.service.CardOperationService;
@@ -38,6 +40,8 @@ public class CardController {
     @Autowired
     private CardOperationService cardOperationService;
     @Autowired
+    private CardMapper cardMapper;
+    @Autowired
     private CardOperationMapper cardOperationMapper;
 
     @GetMapping("/{id}")
@@ -45,20 +49,20 @@ public class CardController {
             @PathVariable("id") Long cardId,
             @AuthenticationPrincipal UserPrincipal userPrincipal
     ) {
-        CardResponse card = cardService.getCardById(cardId, userPrincipal.getId());
+        Card card = cardService.getCardById(cardId, userPrincipal.getId());
 
-        return ResponseEntity.ok(card);
+        return ResponseEntity.ok(cardMapper.toResponse(card));
     }
 
     @GetMapping
-    public ResponseEntity<Page<CardResponse>> getCardsByUser(
+    public ResponseEntity<PagedResponse<CardResponse>> getCardsByUser(
             @PageableDefault(size = DEFAULT_PAGE_SIZE) Pageable pageable,
             @ModelAttribute CardFilter cardFilter,
             @AuthenticationPrincipal UserPrincipal userPrincipal
     ) {
-        Page<CardResponse> pagedCards = cardService.getCardsByUserId(pageable, cardFilter, userPrincipal.getId());
+        Page<Card> pageCards = cardService.getCardsByUserId(pageable, cardFilter, userPrincipal.getId());
 
-        return ResponseEntity.ok(pagedCards);
+        return ResponseEntity.ok(cardMapper.toPagedResponse(pageCards));
     }
 
     // TODO: CardOperationController?
@@ -84,27 +88,27 @@ public class CardController {
     public ResponseEntity<CardResponse> createCard(
             @Valid @RequestBody CreateCardRequest createCardRequest
     ) {
-        CardResponse createdCard = cardService.createCard(createCardRequest);
+        Card createdCard = cardService.createCard(createCardRequest);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
                 .path("/cards/{id}")
-                .buildAndExpand(createdCard.id())
+                .buildAndExpand(createdCard.getId())
                 .toUri();
 
         return ResponseEntity.created(location)
-                .body(createdCard);
+                .body(cardMapper.toResponse(createdCard));
     }
 
     @GetMapping("/all")
     @Secured("ROLE_ADMIN")
-    public ResponseEntity<Page<CardResponse>> getAllCards(
+    public ResponseEntity<PagedResponse<CardResponse>> getAllCards(
             @PageableDefault(size = DEFAULT_PAGE_SIZE) Pageable pageable,
             @ModelAttribute CardFilter cardFilter
     ) {
-        Page<CardResponse> pagedCards = cardService.getCardsWithFilter(pageable, cardFilter);
+        Page<Card> pageCards = cardService.getCardsWithFilter(pageable, cardFilter);
 
-        return ResponseEntity.ok(pagedCards);
+        return ResponseEntity.ok(cardMapper.toPagedResponse(pageCards));
     }
 
     @DeleteMapping("/{id}")
@@ -123,8 +127,8 @@ public class CardController {
             @PathVariable("id") Long cardId,
             @Valid @RequestBody UpdateCardRequest updateCardRequest
     ) {
-        CardResponse card = cardService.updateCard(cardId, updateCardRequest);
+        Card card = cardService.updateCard(cardId, updateCardRequest);
 
-        return ResponseEntity.ok(card);
+        return ResponseEntity.ok(cardMapper.toResponse(card));
     }
 }

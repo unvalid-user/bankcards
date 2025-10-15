@@ -15,8 +15,8 @@ public record PagedResponse<T> (
     public static <T> PagedResponse<T> from(Page<T> page) {
         return new PagedResponse<>(
                 page.getContent(),
-                page.getNumber(),
                 page.getSize(),
+                page.getNumber(),
                 page.getTotalElements(),
                 page.getTotalPages(),
                 page.isLast()

@@ -21,5 +21,6 @@ public interface CardOperationMapper {
         throw new IllegalArgumentException("Unsupported type: " + op.getClass());
     }
 
+    @Mapping(target = "page", source = "number")
     PagedResponse<CardOperationResponse> toPagedResponse(Page<CardOperation> pageOps);
 }
