@@ -18,11 +18,6 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
 
-        response.getWriter().write("""
-            {
-              "error": "Unauthorized",
-              "message": "%s"
-            }
-            """.formatted(authException.getMessage()));
+        response.getWriter().write(authException.getMessage());
     }
 }

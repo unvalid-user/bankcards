@@ -7,12 +7,10 @@ import lombok.Data;
 @Builder
 public class JwtAuthResponse {
     private final String accessToken;
-    private final String refreshToken;
     private final String tokenType = "Bearer";
 
-    public JwtAuthResponse(String accessToken, String refreshToken) {
+    public JwtAuthResponse(String accessToken) {
         this.accessToken = accessToken;
-        this.refreshToken = refreshToken;
     }
 
 }
