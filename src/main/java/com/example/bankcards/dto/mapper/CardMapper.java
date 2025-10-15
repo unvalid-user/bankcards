@@ -8,10 +8,7 @@ import com.example.bankcards.entity.Card;
 import org.mapstruct.*;
 import org.springframework.data.domain.Page;
 
-@Mapper(
-        config = MapStructConfig.class,
-        uses = EntityMapper.class
-)
+@Mapper(config = MapStructConfig.class)
 public interface CardMapper {
     @Mapping(
             target = "maskedNumber",

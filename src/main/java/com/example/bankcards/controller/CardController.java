@@ -65,7 +65,6 @@ public class CardController {
         return ResponseEntity.ok(cardMapper.toPagedResponse(pageCards));
     }
 
-    // TODO: CardOperationController?
     @PostMapping("/{id}/request-block")
     public ResponseEntity<CardOperationResponse> requestBlockCard(
             @PathVariable("id") Long cardId,
