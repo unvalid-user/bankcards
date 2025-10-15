@@ -5,10 +5,8 @@ import com.example.bankcards.entity.CardStatus;
 import com.example.bankcards.entity.card_operation.BlockCardOperation;
 import com.example.bankcards.entity.card_operation.CardOperation;
 import com.example.bankcards.entity.card_operation.CardOperationStatus;
-import com.example.bankcards.exception.AccessDeniedException;
-import com.example.bankcards.exception.BadRequestException;
-import com.example.bankcards.exception.ConflictException;
-import com.example.bankcards.exception.ResourceNotFoundException;
+import com.example.bankcards.exception.*;
+import com.example.bankcards.repository.BlockCardOperationRepository;
 import com.example.bankcards.repository.CardOperationRepository;
 import com.example.bankcards.repository.specification.CardOperationFilter;
 import com.example.bankcards.repository.specification.CardOperationSpecifications;
@@ -21,13 +19,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
-import static com.example.bankcards.util.AppConst.CARD_OPERATION;
-import static com.example.bankcards.util.AppConst.ID;
+import static com.example.bankcards.util.AppConst.*;
 
 @Service
 public class CardOperationService {
     @Autowired
     private CardOperationRepository cardOperationRepository;
+    @Autowired
+    private BlockCardOperationRepository blockCardOperationRepository;
     @Autowired
     private CardService cardService;
 
@@ -39,6 +38,7 @@ public class CardOperationService {
         if (card.getStatus() != CardStatus.ACTIVE) {
             throw new BadRequestException("Card is not ACTIVE");
         }
+        blockOperationShouldNotExist(cardId, userPrincipal.getId());
 
         return cardOperationRepository.save(new BlockCardOperation(userPrincipal.getId(), cardId));
     }
@@ -73,5 +73,15 @@ public class CardOperationService {
     private Page<CardOperation> findCardOperationsWithSpecification(Pageable pageable, CardOperationFilter filter) {
         Specification<CardOperation> spec = CardOperationSpecifications.withFilter(filter);
         return cardOperationRepository.findAll(spec, pageable);
+    }
+
+    private void blockOperationShouldNotExist(Long cardId, Long userId) {
+        if (blockCardOperationRepository.existsByStatusAndCardIdAndUserId(
+                CardOperationStatus.PENDING,
+                cardId,
+                userId
+        )) {
+            throw new ResourceAlreadyExists(BLOCK_CARD_OPERATION, CARD_ID, cardId);
+        }
     }
 }
