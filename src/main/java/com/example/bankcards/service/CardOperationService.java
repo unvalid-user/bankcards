@@ -30,17 +30,17 @@ public class CardOperationService {
     @Autowired
     private CardService cardService;
 
-    public BlockCardOperation createBlockCardOperation(Long cardId, UserPrincipal userPrincipal) {
+    public BlockCardOperation createBlockCardOperation(Long cardId, Long userId) {
         Card card = cardService.findCardById(cardId);
-        if (!Objects.equals(card.getUserId(), userPrincipal.getId())) {
+        if (!Objects.equals(card.getUserId(), userId)) {
             throw new AccessDeniedException();
         }
         if (card.getStatus() != CardStatus.ACTIVE) {
             throw new BadRequestException("Card is not ACTIVE");
         }
-        blockOperationShouldNotExist(cardId, userPrincipal.getId());
+        blockOperationShouldNotExist(cardId, userId);
 
-        return cardOperationRepository.save(new BlockCardOperation(userPrincipal.getId(), cardId));
+        return cardOperationRepository.save(new BlockCardOperation(userId, cardId));
     }
 
     public CardOperation cancelCardOperation(Long cardOperationId) {

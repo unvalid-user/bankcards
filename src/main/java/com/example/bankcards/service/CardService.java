@@ -93,6 +93,10 @@ public class CardService {
 
     @Transactional
     public void transferMoney(Long sourceCardId, Long destinationCardId, BigDecimal monetaryAmount, Long userId) {
+        if (sourceCardId == destinationCardId) {
+            throw new BadRequestException("Cannot transfer money to the same card");
+        }
+
         Card sourceCard = findCardByIdAndUser(sourceCardId, userId);
         Card destinationCard = findCardByIdAndUser(destinationCardId, userId);
 

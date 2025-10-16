@@ -24,8 +24,6 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private UserMapper userMapper;
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
     public User findUserByPhoneNumber(String phoneNumber) {
@@ -53,13 +51,16 @@ public class UserService {
         return findUsersWithSpecification(pageable, userFilter);
     }
 
-    public User updateUser(Long userId, UpdateUserRequest updateUserRequest) {
+    public User updateUser(Long userId, UpdateUserRequest request) {
         User user = findUserById(userId);
 
-        if (updateUserRequest.phoneNumber() != null)
-            userShouldNotExistByPhoneNumber(updateUserRequest.phoneNumber());
-
-        userMapper.updateUserFromDto(updateUserRequest, user);
+        if (request.phoneNumber() != null) {
+            userShouldNotExistByPhoneNumber(request.phoneNumber());
+            user.setPhoneNumber(request.phoneNumber());
+        }
+        if (request.password() != null) {
+            user.setPassword(passwordEncoder.encode(request.password()));
+        }
 
         return userRepository.save(user);
     }
