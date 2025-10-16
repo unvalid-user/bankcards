@@ -70,7 +70,7 @@ public class CardController {
             @PathVariable("id") Long cardId,
             @AuthenticationPrincipal UserPrincipal userPrincipal
     ) {
-        BlockCardOperation createdCardOperation = cardOperationService.createBlockCardOperation(cardId, userPrincipal);
+        BlockCardOperation createdCardOperation = cardOperationService.createBlockCardOperation(cardId, userPrincipal.getId());
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
