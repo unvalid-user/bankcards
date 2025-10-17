@@ -1,6 +1,6 @@
 package com.example.bankcards.dto.user;
 
-import com.example.bankcards.entity.Role;
+import com.example.bankcards.entity.RoleName;
 import com.example.bankcards.validation.annotation.ValidPhoneNumber;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -17,5 +17,5 @@ public record CreateUserRequest(
         String password,
 
         @NotNull
-        Role role
+        RoleName role
 ) {}

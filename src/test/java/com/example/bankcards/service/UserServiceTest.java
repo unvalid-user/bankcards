@@ -4,17 +4,17 @@ import com.example.bankcards.dto.mapper.UserMapper;
 import com.example.bankcards.dto.user.CreateUserRequest;
 import com.example.bankcards.dto.user.UpdateUserRequest;
 import com.example.bankcards.entity.Role;
+import com.example.bankcards.entity.RoleName;
 import com.example.bankcards.entity.User;
-import com.example.bankcards.exception.BadRequestException;
 import com.example.bankcards.exception.ResourceAlreadyExists;
 import com.example.bankcards.exception.ResourceNotFoundException;
+import com.example.bankcards.repository.RoleRepository;
 import com.example.bankcards.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -31,6 +31,8 @@ public class UserServiceTest {
     @Mock
     private UserRepository userRepository;
     @Mock
+    private RoleService roleService;
+    @Mock
     private UserMapper userMapper;
     @Mock
     private PasswordEncoder passwordEncoder;
@@ -45,7 +47,7 @@ public class UserServiceTest {
         String phoneNumber = "89123456789";
         String password = "password";
         String encodedPassword = "encoded";
-        Role role = Role.ROLE_USER;
+        RoleName role = RoleName.ROLE_USER;
         CreateUserRequest request = new CreateUserRequest(
                 phoneNumber,
                 password,
@@ -60,6 +62,7 @@ public class UserServiceTest {
             return user;
         });
         when(userRepository.existsByPhoneNumber(phoneNumber)).thenReturn(false);
+        when(roleService.findRoleByName(role)).thenReturn(new Role(role));
 
 
         User user = userService.createUser(request);
@@ -68,7 +71,7 @@ public class UserServiceTest {
         assertEquals(user.getId(), userId);
         assertEquals(user.getPassword(), encodedPassword);
         assertEquals(user.getPhoneNumber(), phoneNumber);
-        assertEquals(user.getRole(), role);
+        assertEquals(user.getRole().getName(), role);
     }
 
     @Test
@@ -77,7 +80,7 @@ public class UserServiceTest {
         String phoneNumber = "89123456789";
         String password = "password";
         String encodedPassword = "encoded";
-        Role role = Role.ROLE_USER;
+        RoleName role = RoleName.ROLE_USER;
         CreateUserRequest request = new CreateUserRequest(
                 phoneNumber,
                 password,
@@ -99,11 +102,11 @@ public class UserServiceTest {
         String phoneNumber = "89123456789";
         String password = "password";
         String encodedPassword = "encoded";
-        Role role = Role.ROLE_USER;
+        RoleName role = RoleName.ROLE_USER;
 
         User user = User.builder()
                 .id(userId)
-                .role(role)
+                .role(new Role(role))
                 .build();
         UpdateUserRequest request = new UpdateUserRequest(
                 phoneNumber,
@@ -123,7 +126,7 @@ public class UserServiceTest {
         assertEquals(updatedUser.getId(), userId);
         assertEquals(updatedUser.getPassword(), encodedPassword);
         assertEquals(updatedUser.getPhoneNumber(), phoneNumber);
-        assertEquals(updatedUser.getRole(), role);
+        assertEquals(updatedUser.getRole().getName(), role);
     }
 
     @Test
@@ -132,11 +135,11 @@ public class UserServiceTest {
         String phoneNumber = "89123456789";
         String password = "password";
         String encodedPassword = "encoded";
-        Role role = Role.ROLE_USER;
+        RoleName role = RoleName.ROLE_USER;
 
         User user = User.builder()
                 .id(userId)
-                .role(role)
+                .role(new Role(role))
                 .build();
         UpdateUserRequest request = new UpdateUserRequest(
                 phoneNumber,
@@ -157,7 +160,7 @@ public class UserServiceTest {
         String phoneNumber = "89123456789";
         String password = "password";
         String encodedPassword = "encoded";
-        Role role = Role.ROLE_USER;
+        RoleName role = RoleName.ROLE_USER;
 
         UpdateUserRequest request = new UpdateUserRequest(
                 phoneNumber,

@@ -1,9 +1,7 @@
 package com.example.bankcards.service;
 
-import com.example.bankcards.dto.mapper.UserMapper;
 import com.example.bankcards.dto.user.CreateUserRequest;
 import com.example.bankcards.dto.user.UpdateUserRequest;
-import com.example.bankcards.dto.user.UserResponse;
 import com.example.bankcards.entity.User;
 import com.example.bankcards.exception.ResourceAlreadyExists;
 import com.example.bankcards.exception.ResourceNotFoundException;
@@ -24,20 +22,23 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
+    private RoleService roleService;
+    @Autowired
     private PasswordEncoder passwordEncoder;
+
 
     public User findUserByPhoneNumber(String phoneNumber) {
         return userRepository.findByPhoneNumber(phoneNumber).orElseThrow(() ->
                 new ResourceNotFoundException(USER, PHONE_NUMBER, phoneNumber));
     }
 
-    public User createUser(CreateUserRequest createUserRequest) {
-        userShouldNotExistByPhoneNumber(createUserRequest.phoneNumber());
+    public User createUser(CreateUserRequest request) {
+        userShouldNotExistByPhoneNumber(request.phoneNumber());
 
         User user = User.builder()
-                .phoneNumber(createUserRequest.phoneNumber())
-                .password(passwordEncoder.encode(createUserRequest.password()))
-                .role(createUserRequest.role())
+                .phoneNumber(request.phoneNumber())
+                .password(passwordEncoder.encode(request.password()))
+                .role(roleService.findRoleByName(request.role()))
                 .build();
 
         return userRepository.save(user);

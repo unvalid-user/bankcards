@@ -1,6 +1,6 @@
 package com.example.bankcards.repository.specification;
 
-import com.example.bankcards.entity.Role;
+import com.example.bankcards.entity.RoleName;
 import lombok.Builder;
 import lombok.Data;
 
@@ -9,5 +9,5 @@ import lombok.Data;
 public class UserFilter {
     private Long id;
     private String phoneNumber;
-    private Role role;
+    private RoleName role;
 }

@@ -2,7 +2,6 @@ package com.example.bankcards.dto.card_operation;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor

@@ -2,10 +2,7 @@ package com.example.bankcards.service;
 
 import com.example.bankcards.dto.card.CreateCardRequest;
 import com.example.bankcards.dto.mapper.CardMapper;
-import com.example.bankcards.entity.Card;
-import com.example.bankcards.entity.CardStatus;
-import com.example.bankcards.entity.Role;
-import com.example.bankcards.entity.User;
+import com.example.bankcards.entity.*;
 import com.example.bankcards.exception.BadRequestException;
 import com.example.bankcards.repository.CardRepository;
 import com.example.bankcards.util.Encryptor;
@@ -60,7 +57,7 @@ public class CardServiceTest {
         User user = User.builder()
                 .id(userId)
                 .phoneNumber(userPhoneNumber)
-                .role(Role.ROLE_USER)
+                .role(new Role(RoleName.ROLE_USER))
                 .build();
 
 

@@ -1,0 +1,54 @@
+databaseChangeLog:
+  - changeSet:
+        id: 1
+        author: natal
+        comment: add-role-id-column-to-users
+        changes:
+          - addColumn:
+              tableName: users
+              columns:
+                - column:
+                    name: role_id
+                    type: BIGINT
+
+  - changeSet:
+      id: 2
+      author: natal
+      comment: set-users-role-id
+      changes:
+        - update:
+            tableName: users
+            columns:
+              - column:
+                  name: role_id
+                  value: 1
+            where: "role = 'ROLE_ADMIN'"
+
+        - update:
+            tableName: users
+            columns:
+              - column:
+                  name: role_id
+                  value: 2
+            where: "role = 'ROLE_USER'"
+
+  - changeSet:
+      id: 3
+      author: natal
+      comment: drop-role-column
+      changes:
+        - dropColumn:
+            tableName: users
+            columnName: role
+
+  - changeSet:
+      id: 4
+      author: natal
+      comment: add-fk-users-roles
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: users
+            baseColumnNames: role_id
+            referencedTableName: roles
+            referencedColumnNames: id
+            constraintName: fk_users_roles
