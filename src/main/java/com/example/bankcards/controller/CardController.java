@@ -30,7 +30,6 @@ import static com.example.bankcards.util.AppConst.DEFAULT_PAGE_SIZE;
 
 // TODO:
 //  - restrict sort params
-//  - add card transactions
 
 @RestController
 @RequestMapping("/cards")

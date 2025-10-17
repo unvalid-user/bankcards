@@ -8,7 +8,8 @@ import com.example.bankcards.entity.User;
 import org.mapstruct.*;
 import org.springframework.data.domain.Page;
 
-@Mapper(config = MapStructConfig.class)
+@Mapper(config = MapStructConfig.class,
+        uses = EntityMapper.class)
 public interface UserMapper {
     UserResponse toResponse(User user);
 
