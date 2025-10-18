@@ -44,11 +44,11 @@ public class CardOperationService {
     }
 
     public CardOperation cancelCardOperation(Long cardOperationId) {
-        return changeCardOperationStatus(cardOperationId, CardOperationStatus.COMPLETED);
+        return changeCardOperationStatus(cardOperationId, CardOperationStatus.CANCELED);
     }
 
     public CardOperation completeCardOperation(Long cardOperationId) {
-        return changeCardOperationStatus(cardOperationId, CardOperationStatus.CANCELED);
+        return changeCardOperationStatus(cardOperationId, CardOperationStatus.COMPLETED);
     }
 
     private CardOperation changeCardOperationStatus(Long cardOperationId, CardOperationStatus status) {
