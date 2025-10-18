@@ -58,7 +58,7 @@ public class UserController {
        return ResponseEntity.ok(userMapper.toResponse(user));
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<PagedResponse<UserResponse>> getAllUsers(
             @PageableDefault(size = DEFAULT_PAGE_SIZE) Pageable pageable,
             @ModelAttribute UserFilter userFilter

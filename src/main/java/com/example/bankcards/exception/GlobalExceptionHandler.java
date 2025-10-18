@@ -1,6 +1,6 @@
 package com.example.bankcards.exception;
 
-import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
+import com.example.bankcards.dto.ErrorResponse;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,55 +21,73 @@ import java.util.Objects;
 public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<String> resolveException(ResourceNotFoundException exception) {
+    public ResponseEntity<ErrorResponse> resolveException(ResourceNotFoundException exception) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(exception.getMessage());
+                .body(ErrorResponse.builder()
+                        .error(HttpStatus.NOT_FOUND.toString())
+                        .message(exception.getMessage())
+                        .build());
     }
 
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(ResourceAlreadyExists.class)
-    public ResponseEntity<String> resolveException(ResourceAlreadyExists exception) {
+    public ResponseEntity<ErrorResponse> resolveException(ResourceAlreadyExists exception) {
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
-                .body(exception.getMessage());
+                .body(ErrorResponse.builder()
+                        .error(HttpStatus.CONFLICT.toString())
+                        .message(exception.getMessage())
+                        .build());
     }
 
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(ConflictException.class)
-    public ResponseEntity<String> resolveException(ConflictException exception) {
+    public ResponseEntity<ErrorResponse> resolveException(ConflictException exception) {
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
-                .body(exception.getMessage());
+                .body(ErrorResponse.builder()
+                        .error(HttpStatus.CONFLICT.toString())
+                        .message(exception.getMessage())
+                        .build());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<String> resolveException(BadRequestException exception) {
+    public ResponseEntity<ErrorResponse> resolveException(BadRequestException exception) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(exception.getMessage());
+                .body(ErrorResponse.builder()
+                        .error(HttpStatus.BAD_REQUEST.toString())
+                        .message(exception.getMessage())
+                        .build());
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<String> resolveException(AccessDeniedException exception) {
+    public ResponseEntity<ErrorResponse> resolveException(AccessDeniedException exception) {
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
-                .body(exception.getMessage());
+                .body(ErrorResponse.builder()
+                        .error(HttpStatus.FORBIDDEN.toString())
+                        .message(exception.getMessage())
+                        .build());
     }
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(UnauthorizedException.class)
-    public ResponseEntity<String> resolveException(UnauthorizedException exception) {
+    public ResponseEntity<ErrorResponse> resolveException(UnauthorizedException exception) {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
-                .body(exception.getMessage());
+                .body(ErrorResponse.builder()
+                        .error(HttpStatus.UNAUTHORIZED.toString())
+                        .message(exception.getMessage())
+                        .build());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<String> resolveException(MethodArgumentNotValidException exception) {
+    public ResponseEntity<ErrorResponse> resolveException(MethodArgumentNotValidException exception) {
         List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
         List<String> messages = new ArrayList<>(fieldErrors.size());
         for (FieldError error: fieldErrors) {
@@ -78,12 +96,15 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(messages.toString());
+                .body(ErrorResponse.builder()
+                        .error(HttpStatus.BAD_REQUEST.toString())
+                        .message(messages.toString())
+                        .build());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<String> resolveException(MethodArgumentTypeMismatchException exception) {
+    public ResponseEntity<ErrorResponse> resolveException(MethodArgumentTypeMismatchException exception) {
         String message = String.format("Parameter '%s' must be '%s'",
                 exception.getParameter().getParameterName(),
                 Objects.requireNonNull(exception.getRequiredType()).getSimpleName()
@@ -91,33 +112,54 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(message);
+                .body(ErrorResponse.builder()
+                        .error(HttpStatus.BAD_REQUEST.toString())
+                        .message(message)
+                        .build());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(PropertyReferenceException.class)
-    public ResponseEntity<String> resolveException(PropertyReferenceException exception) {
+    public ResponseEntity<ErrorResponse> resolveException(PropertyReferenceException exception) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(exception.getMessage());
+                .body(ErrorResponse.builder()
+                        .error(HttpStatus.BAD_REQUEST.toString())
+                        .message(exception.getMessage())
+                        .build());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<String> resolveException(HttpMessageNotReadableException exception) {
+    public ResponseEntity<ErrorResponse> resolveException(HttpMessageNotReadableException exception) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(exception.getMessage());
+                .body(ErrorResponse.builder()
+                        .error(HttpStatus.BAD_REQUEST.toString())
+                        .message(exception.getMessage())
+                        .build());
     }
 
     // TODO
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public ResponseEntity<String> resolveException(HttpRequestMethodNotSupportedException exception) {
+    public ResponseEntity<ErrorResponse> resolveException(HttpRequestMethodNotSupportedException exception) {
         String message = "Method '" + exception.getMethod() + "' not supported.";
 
         return ResponseEntity
                 .status(HttpStatus.METHOD_NOT_ALLOWED)
-                .body(message);
+                .body(ErrorResponse.builder()
+                        .error(HttpStatus.METHOD_NOT_ALLOWED.toString())
+                        .message(message)
+                        .build());
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleAllExceptions(Exception exception) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ErrorResponse.builder()
+                        .error(HttpStatus.INTERNAL_SERVER_ERROR.toString())
+                        .message(exception.getMessage())
+                        .build());
     }
 }
