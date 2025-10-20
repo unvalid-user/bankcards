@@ -44,6 +44,15 @@ public class CardOperationController {
         return ResponseEntity.ok(cardOperationMapper.toResponse(cardOperation));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<CardOperationResponse> getCardOperationById(
+            @PathVariable("id") Long cardOperationId
+    ) {
+        CardOperation cardOperation = cardOperationService.getCardOperationById(cardOperationId);
+
+        return ResponseEntity.ok(cardOperationMapper.toResponse(cardOperation));
+    }
+
     // TODO: "type" field in JSON
     @GetMapping
     public ResponseEntity<PagedResponse<CardOperationResponse>> getAllCardOperations(

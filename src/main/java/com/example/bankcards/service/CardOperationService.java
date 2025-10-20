@@ -55,7 +55,7 @@ public class CardOperationService {
         CardOperation cardOperation = findCardOperationById(cardOperationId);
 
         if (cardOperation.getStatus() != CardOperationStatus.PENDING)
-            throw new ConflictException("Card operation current status in not PENDING");
+            throw new ConflictException("Card operation current status is not PENDING");
 
         cardOperation.setStatus(status);
         return cardOperationRepository.save(cardOperation);
@@ -83,5 +83,9 @@ public class CardOperationService {
         )) {
             throw new ResourceAlreadyExists(BLOCK_CARD_OPERATION, CARD_ID, cardId);
         }
+    }
+
+    public CardOperation getCardOperationById(Long cardOperationId) {
+        return findCardOperationById(cardOperationId);
     }
 }
