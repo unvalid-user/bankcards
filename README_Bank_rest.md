@@ -37,18 +37,18 @@ Explore <http://localhost:8080/swagger-ui/index.html> for all available endpoint
 
 | Method | Url           | Description | Role access | Sample Valid Request Body | 
 |--------|---------------|-------------|-------------|---------------------------|
-| POST   | /auth/sign-in | Log in      | -           | [JSON](#signin)           |
+| POST   | /auth/sign-in | Log in      | -           | [JSON](#login-request)    |
 
 ### Cards
-| Method | Url                       | Description               | Role access | Sample Valid Request Body  | 
-|--------|---------------------------|---------------------------|-------------|----------------------------|
-| GET    | /cards/{id}               | Get user's card by id     | any         |                            |
-| GET    | /cards                    | Get user's cards          | any         |                            |
-| POST   | /cards/{id}/request-block | Create card block request | any         |                            |
-| POST   | /cards                    | Create card               | ADMIN       | [JSON](#CreateCardRequest) |
-| GET    | /cards/all                | Get all cards             | ADMIN       |                            |
-| DELETE | /cards/{id}               | Delete card by id         | ADMIN       |                            |
-| PATCH  | /cards/{id}               | Update card               | ADMIN       | [JSON](#UpdateCardRequest) |  
+| Method | Url                       | Description               | Role access | Sample Valid Request Body    | 
+|--------|---------------------------|---------------------------|-------------|------------------------------|
+| GET    | /cards/{id}               | Get user's card by id     | any         |                              |
+| GET    | /cards                    | Get user's cards          | any         |                              |
+| POST   | /cards/{id}/request-block | Create card block request | any         |                              |
+| POST   | /cards                    | Create card               | ADMIN       | [JSON](#create-card-request) |
+| GET    | /cards/all                | Get all cards             | ADMIN       |                              |
+| DELETE | /cards/{id}               | Delete card by id         | ADMIN       |                              |
+| PATCH  | /cards/{id}               | Update card               | ADMIN       | [JSON](#update-card-request) |  
 
 ### Card operations
 
@@ -61,25 +61,25 @@ Explore <http://localhost:8080/swagger-ui/index.html> for all available endpoint
 
 ### Transactions
 
-| Method | Url                | Description                  | Role access | Sample Valid Request Body          | 
-|--------|--------------------|------------------------------|-------------|------------------------------------|
-| GET    | /transactions      | Get user's transactions      | any         |                                    |
-| GET    | /transactions/{id} | Get user's transaction by id | any         |                                    |
-| POST   | /transactions      | Create transaction           | any         | [JSON](#CreateTransactionRequest)  |
-| GET    | /transactions/all  | Get all transactions         | ADMIN       |                                    |
+| Method | Url                | Description                  | Role access | Sample Valid Request Body           | 
+|--------|--------------------|------------------------------|-------------|-------------------------------------|
+| GET    | /transactions      | Get user's transactions      | any         |                                     |
+| GET    | /transactions/{id} | Get user's transaction by id | any         |                                     |
+| POST   | /transactions      | Create transaction           | any         | [JSON](#create-transaction-request) |
+| GET    | /transactions/all  | Get all transactions         | ADMIN       |                                     |
 
 ### Users
 
-| Method | Url         | Description       | Role access | Sample Valid Request Body  | 
-|--------|-------------|-------------------|-------------|----------------------------|
-| POST   | /users      | Create user       | ADMIN       | [JSON](#CreateUserRequest) |
-| GET    | /users/{id} | Get user by id    | ADMIN       |                            |
-| GET    | /users/all  | Get all users     | ADMIN       |                            |
-| PATCH  | /users      | Update user by id | ADMIN       | [JSON](#UpdateUserRequest) |
+| Method | Url         | Description       | Role access | Sample Valid Request Body    | 
+|--------|-------------|-------------------|-------------|------------------------------|
+| POST   | /users      | Create user       | ADMIN       | [JSON](#create-user-request) |
+| GET    | /users/{id} | Get user by id    | ADMIN       |                              |
+| GET    | /users/all  | Get all users     | ADMIN       |                              |
+| PATCH  | /users      | Update user by id | ADMIN       | [JSON](#update-user-request) |
 
 ## Sample Valid JSON Request Bodies:
 
-##### <a id="LoginRequest">Sign Ip</a>
+##### <a id="login-request">Sign In</a>
 ```json
 {
   "phoneNumber": "admin",
@@ -87,7 +87,7 @@ Explore <http://localhost:8080/swagger-ui/index.html> for all available endpoint
 }
 ```
 
-##### <a id="CreateCardRequest">Create Card</a>
+##### <a id="create-card-request">Create Card</a>
 ```json
 {
   "cardNumber": "1234567812345678",
@@ -96,7 +96,7 @@ Explore <http://localhost:8080/swagger-ui/index.html> for all available endpoint
 }
 ```
 
-##### <a id="UpdateCardRequest">Update Card</a>
+##### <a id="update-card-request">Update Card</a>
 ```json
 {
   "expirationDate": "2030-10-20",
@@ -104,7 +104,7 @@ Explore <http://localhost:8080/swagger-ui/index.html> for all available endpoint
 }
 ```
 
-##### <a id="CreateTransactionRequest">Create Transaction</a>
+##### <a id="create-transaction-request">Create Transaction</a>
 ```json
 {
   "sourceCardId": 1,
@@ -113,7 +113,7 @@ Explore <http://localhost:8080/swagger-ui/index.html> for all available endpoint
 }
 ```
 
-##### <a id="CreateUserRequest">Create User</a>
+##### <a id="create-user-request">Create User</a>
 ```json
 {
   "phoneNumber": "89991234455",
@@ -122,7 +122,7 @@ Explore <http://localhost:8080/swagger-ui/index.html> for all available endpoint
 }
 ```
 
-##### <a id="UpdateUserRequest">Update User</a>
+##### <a id="update-user-request">Update User</a>
 ```json
 {
   "phoneNumber": "89991234455",
