@@ -1,9 +1,9 @@
 package com.example.bankcards.dto.mapper;
 
 import com.example.bankcards.config.MapStructConfig;
-import com.example.bankcards.dto.PagedResponse;
-import com.example.bankcards.dto.card_operation.BlockCardOperationResponse;
-import com.example.bankcards.dto.card_operation.CardOperationResponse;
+import com.example.bankcards.dto.response.PagedResponse;
+import com.example.bankcards.dto.response.BlockCardOperationResponse;
+import com.example.bankcards.dto.response.CardOperationResponse;
 import com.example.bankcards.entity.card_operation.BlockCardOperation;
 import com.example.bankcards.entity.card_operation.CardOperation;
 import org.mapstruct.Mapper;

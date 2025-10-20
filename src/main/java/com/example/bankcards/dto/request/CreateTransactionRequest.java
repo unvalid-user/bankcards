@@ -1,4 +1,4 @@
-package com.example.bankcards.dto.transaction;
+package com.example.bankcards.dto.request;
 
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;

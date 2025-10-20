@@ -1,10 +1,10 @@
 package com.example.bankcards.service;
 
-import com.example.bankcards.dto.transaction.CreateTransactionRequest;
+import com.example.bankcards.dto.request.CreateTransactionRequest;
 import com.example.bankcards.entity.Transaction;
 import com.example.bankcards.exception.ResourceNotFoundException;
 import com.example.bankcards.repository.TransactionRepository;
-import com.example.bankcards.repository.specification.TransactionFilter;
+import com.example.bankcards.dto.filter.TransactionFilter;
 import com.example.bankcards.repository.specification.TransactionSpecifications;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,7 +27,7 @@ public class TransactionService {
         return findTransactionsWithSpecification(pageable, filter);
     }
 
-    public Transaction getTransactionById(Long trId, Long userId) {
+    public Transaction getTransactionByIdAndUser(Long trId, Long userId) {
         return findTransactionByIdAndUser(trId, userId);
     }
 

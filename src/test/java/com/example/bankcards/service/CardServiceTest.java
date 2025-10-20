@@ -1,6 +1,6 @@
 package com.example.bankcards.service;
 
-import com.example.bankcards.dto.card.CreateCardRequest;
+import com.example.bankcards.dto.request.CreateCardRequest;
 import com.example.bankcards.dto.mapper.CardMapper;
 import com.example.bankcards.entity.*;
 import com.example.bankcards.exception.BadRequestException;

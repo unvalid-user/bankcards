@@ -1,4 +1,4 @@
-package com.example.bankcards.dto.transaction;
+package com.example.bankcards.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

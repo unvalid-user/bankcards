@@ -1,10 +1,10 @@
 package com.example.bankcards.controller;
 
-import com.example.bankcards.dto.PagedResponse;
-import com.example.bankcards.dto.card_operation.CardOperationResponse;
+import com.example.bankcards.dto.response.PagedResponse;
+import com.example.bankcards.dto.response.CardOperationResponse;
 import com.example.bankcards.dto.mapper.CardOperationMapper;
 import com.example.bankcards.entity.card_operation.CardOperation;
-import com.example.bankcards.repository.specification.CardOperationFilter;
+import com.example.bankcards.dto.filter.CardOperationFilter;
 import com.example.bankcards.service.CardOperationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

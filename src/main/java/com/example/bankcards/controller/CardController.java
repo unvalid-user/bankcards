@@ -1,15 +1,15 @@
 package com.example.bankcards.controller;
 
-import com.example.bankcards.dto.PagedResponse;
-import com.example.bankcards.dto.card.CreateCardRequest;
-import com.example.bankcards.dto.card.CardResponse;
-import com.example.bankcards.dto.card.UpdateCardRequest;
-import com.example.bankcards.dto.card_operation.CardOperationResponse;
+import com.example.bankcards.dto.response.PagedResponse;
+import com.example.bankcards.dto.request.CreateCardRequest;
+import com.example.bankcards.dto.response.CardResponse;
+import com.example.bankcards.dto.request.UpdateCardRequest;
+import com.example.bankcards.dto.response.CardOperationResponse;
 import com.example.bankcards.dto.mapper.CardMapper;
 import com.example.bankcards.dto.mapper.CardOperationMapper;
 import com.example.bankcards.entity.Card;
 import com.example.bankcards.entity.card_operation.BlockCardOperation;
-import com.example.bankcards.repository.specification.CardFilter;
+import com.example.bankcards.dto.filter.CardFilter;
 import com.example.bankcards.security.UserPrincipal;
 import com.example.bankcards.service.CardOperationService;
 import com.example.bankcards.service.CardService;

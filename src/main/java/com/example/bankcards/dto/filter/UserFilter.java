@@ -1,4 +1,4 @@
-package com.example.bankcards.repository.specification;
+package com.example.bankcards.dto.filter;
 
 import com.example.bankcards.entity.RoleName;
 import lombok.Builder;

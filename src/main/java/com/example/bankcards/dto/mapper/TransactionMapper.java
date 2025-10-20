@@ -1,8 +1,8 @@
 package com.example.bankcards.dto.mapper;
 
 import com.example.bankcards.config.MapStructConfig;
-import com.example.bankcards.dto.PagedResponse;
-import com.example.bankcards.dto.transaction.TransactionResponse;
+import com.example.bankcards.dto.response.PagedResponse;
+import com.example.bankcards.dto.response.TransactionResponse;
 import com.example.bankcards.entity.Transaction;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

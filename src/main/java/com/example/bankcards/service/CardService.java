@@ -1,14 +1,14 @@
 package com.example.bankcards.service;
 
-import com.example.bankcards.dto.card.CreateCardRequest;
-import com.example.bankcards.dto.card.UpdateCardRequest;
+import com.example.bankcards.dto.request.CreateCardRequest;
+import com.example.bankcards.dto.request.UpdateCardRequest;
 import com.example.bankcards.dto.mapper.CardMapper;
 import com.example.bankcards.entity.Card;
 import com.example.bankcards.entity.CardStatus;
 import com.example.bankcards.exception.BadRequestException;
 import com.example.bankcards.exception.ResourceNotFoundException;
 import com.example.bankcards.repository.CardRepository;
-import com.example.bankcards.repository.specification.CardFilter;
+import com.example.bankcards.dto.filter.CardFilter;
 import com.example.bankcards.repository.specification.CardSpecifications;
 import com.example.bankcards.util.Encryptor;
 import org.springframework.beans.factory.annotation.Autowired;

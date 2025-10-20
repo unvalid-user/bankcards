@@ -1,12 +1,12 @@
 package com.example.bankcards.service;
 
-import com.example.bankcards.dto.user.CreateUserRequest;
-import com.example.bankcards.dto.user.UpdateUserRequest;
+import com.example.bankcards.dto.request.CreateUserRequest;
+import com.example.bankcards.dto.request.UpdateUserRequest;
 import com.example.bankcards.entity.User;
 import com.example.bankcards.exception.ResourceAlreadyExists;
 import com.example.bankcards.exception.ResourceNotFoundException;
 import com.example.bankcards.repository.UserRepository;
-import com.example.bankcards.repository.specification.UserFilter;
+import com.example.bankcards.dto.filter.UserFilter;
 import com.example.bankcards.repository.specification.UserSpecifications;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

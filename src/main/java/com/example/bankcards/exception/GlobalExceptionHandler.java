@@ -1,6 +1,6 @@
 package com.example.bankcards.exception;
 
-import com.example.bankcards.dto.ErrorResponse;
+import com.example.bankcards.dto.response.ErrorResponse;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

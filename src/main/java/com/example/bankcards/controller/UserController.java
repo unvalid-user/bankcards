@@ -1,12 +1,12 @@
 package com.example.bankcards.controller;
 
-import com.example.bankcards.dto.PagedResponse;
+import com.example.bankcards.dto.response.PagedResponse;
 import com.example.bankcards.dto.mapper.UserMapper;
-import com.example.bankcards.dto.user.CreateUserRequest;
-import com.example.bankcards.dto.user.UpdateUserRequest;
-import com.example.bankcards.dto.user.UserResponse;
+import com.example.bankcards.dto.request.CreateUserRequest;
+import com.example.bankcards.dto.request.UpdateUserRequest;
+import com.example.bankcards.dto.response.UserResponse;
 import com.example.bankcards.entity.User;
-import com.example.bankcards.repository.specification.UserFilter;
+import com.example.bankcards.dto.filter.UserFilter;
 import com.example.bankcards.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

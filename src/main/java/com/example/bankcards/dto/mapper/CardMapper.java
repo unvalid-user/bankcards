@@ -1,9 +1,9 @@
 package com.example.bankcards.dto.mapper;
 
 import com.example.bankcards.config.MapStructConfig;
-import com.example.bankcards.dto.PagedResponse;
-import com.example.bankcards.dto.card.CardResponse;
-import com.example.bankcards.dto.card.UpdateCardRequest;
+import com.example.bankcards.dto.response.PagedResponse;
+import com.example.bankcards.dto.response.CardResponse;
+import com.example.bankcards.dto.request.UpdateCardRequest;
 import com.example.bankcards.entity.Card;
 import org.mapstruct.*;
 import org.springframework.data.domain.Page;

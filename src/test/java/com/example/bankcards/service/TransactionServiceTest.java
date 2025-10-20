@@ -1,6 +1,6 @@
 package com.example.bankcards.service;
 
-import com.example.bankcards.dto.transaction.CreateTransactionRequest;
+import com.example.bankcards.dto.request.CreateTransactionRequest;
 import com.example.bankcards.entity.Transaction;
 import com.example.bankcards.repository.TransactionRepository;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package com.example.bankcards.dto.card;
+package com.example.bankcards.dto.request;
 
 import com.example.bankcards.entity.CardStatus;
 import jakarta.validation.constraints.Future;

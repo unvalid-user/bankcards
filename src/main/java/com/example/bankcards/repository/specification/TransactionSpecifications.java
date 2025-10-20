@@ -1,5 +1,6 @@
 package com.example.bankcards.repository.specification;
 
+import com.example.bankcards.dto.filter.TransactionFilter;
 import com.example.bankcards.entity.Transaction;
 import org.springframework.data.jpa.domain.Specification;
 

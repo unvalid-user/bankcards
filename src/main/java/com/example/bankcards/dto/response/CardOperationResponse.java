@@ -1,7 +1,5 @@
-package com.example.bankcards.dto.card_operation;
+package com.example.bankcards.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

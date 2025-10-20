@@ -1,5 +1,6 @@
 package com.example.bankcards.repository.specification;
 
+import com.example.bankcards.dto.filter.CardOperationFilter;
 import com.example.bankcards.entity.card_operation.CardOperation;
 import com.example.bankcards.entity.card_operation.CardOperationStatus;
 import org.springframework.data.jpa.domain.Specification;

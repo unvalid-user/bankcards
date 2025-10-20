@@ -1,11 +1,11 @@
 package com.example.bankcards.controller;
 
-import com.example.bankcards.dto.PagedResponse;
-import com.example.bankcards.dto.transaction.CreateTransactionRequest;
-import com.example.bankcards.dto.transaction.TransactionResponse;
+import com.example.bankcards.dto.response.PagedResponse;
+import com.example.bankcards.dto.request.CreateTransactionRequest;
+import com.example.bankcards.dto.response.TransactionResponse;
 import com.example.bankcards.dto.mapper.TransactionMapper;
 import com.example.bankcards.entity.Transaction;
-import com.example.bankcards.repository.specification.TransactionFilter;
+import com.example.bankcards.dto.filter.TransactionFilter;
 import com.example.bankcards.security.UserPrincipal;
 import com.example.bankcards.service.TransactionService;
 import jakarta.validation.Valid;
@@ -45,7 +45,7 @@ public class TransactionController {
             @PathVariable("id") Long transactionId,
             @AuthenticationPrincipal UserPrincipal userPrincipal
     ) {
-        Transaction transaction = transactionService.getTransactionById(transactionId, userPrincipal.getId());
+        Transaction transaction = transactionService.getTransactionByIdAndUser(transactionId, userPrincipal.getId());
 
         return ResponseEntity.ok(transactionMapper.toResponse(transaction));
     }

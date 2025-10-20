@@ -1,4 +1,4 @@
-package com.example.bankcards.dto.user;
+package com.example.bankcards.dto.request;
 
 import com.example.bankcards.validation.annotation.ValidPhoneNumber;
 import jakarta.validation.constraints.Size;

@@ -1,5 +1,6 @@
 package com.example.bankcards.repository.specification;
 
+import com.example.bankcards.dto.filter.UserFilter;
 import com.example.bankcards.entity.RoleName;
 import com.example.bankcards.entity.User;
 import org.springframework.data.jpa.domain.Specification;
