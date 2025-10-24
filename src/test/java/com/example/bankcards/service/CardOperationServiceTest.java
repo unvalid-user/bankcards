@@ -6,7 +6,7 @@ import com.example.bankcards.entity.card_operation.BlockCardOperation;
 import com.example.bankcards.entity.card_operation.CardOperationStatus;
 import com.example.bankcards.exception.AccessDeniedException;
 import com.example.bankcards.exception.BadRequestException;
-import com.example.bankcards.exception.ResourceAlreadyExists;
+import com.example.bankcards.exception.ResourceAlreadyExistsException;
 import com.example.bankcards.repository.BlockCardOperationRepository;
 import com.example.bankcards.repository.CardOperationRepository;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -131,7 +130,7 @@ public class CardOperationServiceTest {
         )).thenReturn(true);
 
 
-        assertThrows(ResourceAlreadyExists.class, () ->
+        assertThrows(ResourceAlreadyExistsException.class, () ->
                 cardOperationService.createBlockCardOperation(cardId, userId)
         );
     }

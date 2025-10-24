@@ -3,7 +3,7 @@ package com.example.bankcards.service;
 import com.example.bankcards.dto.request.CreateUserRequest;
 import com.example.bankcards.dto.request.UpdateUserRequest;
 import com.example.bankcards.entity.User;
-import com.example.bankcards.exception.ResourceAlreadyExists;
+import com.example.bankcards.exception.ResourceAlreadyExistsException;
 import com.example.bankcards.exception.ResourceNotFoundException;
 import com.example.bankcards.repository.UserRepository;
 import com.example.bankcards.dto.filter.UserFilter;
@@ -73,7 +73,7 @@ public class UserService {
 
     private void userShouldNotExistByPhoneNumber(String phoneNumber) {
         if (userRepository.existsByPhoneNumber(phoneNumber))
-            throw new ResourceAlreadyExists(USER, PHONE_NUMBER, phoneNumber);
+            throw new ResourceAlreadyExistsException(USER, PHONE_NUMBER, phoneNumber);
     }
 
     private Page<User> findUsersWithSpecification(Pageable pageable, UserFilter userFilter) {

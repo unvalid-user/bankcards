@@ -6,7 +6,6 @@ import jakarta.validation.constraints.Positive;
 
 import java.math.BigDecimal;
 
-// TODO: Validation
 public record CreateTransactionRequest (
         @NotNull
         Long sourceCardId,

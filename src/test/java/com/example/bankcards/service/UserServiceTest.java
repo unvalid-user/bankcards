@@ -6,7 +6,7 @@ import com.example.bankcards.dto.request.UpdateUserRequest;
 import com.example.bankcards.entity.Role;
 import com.example.bankcards.entity.RoleName;
 import com.example.bankcards.entity.User;
-import com.example.bankcards.exception.ResourceAlreadyExists;
+import com.example.bankcards.exception.ResourceAlreadyExistsException;
 import com.example.bankcards.exception.ResourceNotFoundException;
 import com.example.bankcards.repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -90,7 +90,7 @@ public class UserServiceTest {
         when(userRepository.existsByPhoneNumber(phoneNumber)).thenReturn(true);
 
 
-        assertThrows(ResourceAlreadyExists.class, () -> {
+        assertThrows(ResourceAlreadyExistsException.class, () -> {
             userService.createUser(request);
         });
     }
@@ -150,7 +150,7 @@ public class UserServiceTest {
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
 
-        assertThrows(ResourceAlreadyExists.class, () -> userService.updateUser(userId, request));
+        assertThrows(ResourceAlreadyExistsException.class, () -> userService.updateUser(userId, request));
     }
 
     @Test

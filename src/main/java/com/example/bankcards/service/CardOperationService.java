@@ -80,7 +80,7 @@ public class CardOperationService {
                 cardId,
                 userId
         )) {
-            throw new ResourceAlreadyExists(BLOCK_CARD_OPERATION, CARD_ID, cardId);
+            throw new ResourceAlreadyExistsException(BLOCK_CARD_OPERATION, CARD_ID, cardId);
         }
     }
 

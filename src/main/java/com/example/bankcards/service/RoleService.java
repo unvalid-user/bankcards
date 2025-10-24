@@ -2,7 +2,6 @@ package com.example.bankcards.service;
 
 import com.example.bankcards.entity.Role;
 import com.example.bankcards.entity.RoleName;
-import com.example.bankcards.exception.ResourceAlreadyExists;
 import com.example.bankcards.exception.ResourceNotFoundException;
 import com.example.bankcards.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;

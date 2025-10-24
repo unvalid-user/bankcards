@@ -18,7 +18,6 @@ public class Card {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // TODO: type
     @Column(nullable = false)
     private String maskedNumber;
 

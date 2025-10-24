@@ -1,7 +1,6 @@
 package com.example.bankcards.validation.annotation;
 
-import com.example.bankcards.validation.validator.CardNumberValidator;
-import com.example.bankcards.validation.validator.PhoneNumberValidation;
+import com.example.bankcards.validation.validator.PhoneNumberValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
@@ -13,7 +12,7 @@ import java.lang.annotation.Target;
 import static com.example.bankcards.validation.ValidationMessage.PHONE_NUMBER_INVALID_FORMAT;
 
 
-@Constraint(validatedBy = PhoneNumberValidation.class)
+@Constraint(validatedBy = PhoneNumberValidator.class)
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidPhoneNumber {
