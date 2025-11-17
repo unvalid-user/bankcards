@@ -22,67 +22,31 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> resolveException(ResourceNotFoundException exception) {
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(ErrorResponse.builder()
-                        .error(HttpStatus.NOT_FOUND.toString())
-                        .message(exception.getMessage())
-                        .build());
+        return buildErrorResponse(HttpStatus.NOT_FOUND, exception.getMessage());
     }
 
     @ResponseStatus(HttpStatus.CONFLICT)
-    @ExceptionHandler(ResourceAlreadyExistsException.class)
-    public ResponseEntity<ErrorResponse> resolveException(ResourceAlreadyExistsException exception) {
-        return ResponseEntity
-                .status(HttpStatus.CONFLICT)
-                .body(ErrorResponse.builder()
-                        .error(HttpStatus.CONFLICT.toString())
-                        .message(exception.getMessage())
-                        .build());
-    }
-
-    @ResponseStatus(HttpStatus.CONFLICT)
-    @ExceptionHandler(ConflictException.class)
-    public ResponseEntity<ErrorResponse> resolveException(ConflictException exception) {
-        return ResponseEntity
-                .status(HttpStatus.CONFLICT)
-                .body(ErrorResponse.builder()
-                        .error(HttpStatus.CONFLICT.toString())
-                        .message(exception.getMessage())
-                        .build());
+    @ExceptionHandler({ResourceAlreadyExistsException.class, ConflictException.class})
+    public ResponseEntity<ErrorResponse> resolveException(Exception exception) {
+        return buildErrorResponse(HttpStatus.CONFLICT, exception.getMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ErrorResponse> resolveException(BadRequestException exception) {
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(ErrorResponse.builder()
-                        .error(HttpStatus.BAD_REQUEST.toString())
-                        .message(exception.getMessage())
-                        .build());
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErrorResponse> resolveException(AccessDeniedException exception) {
-        return ResponseEntity
-                .status(HttpStatus.FORBIDDEN)
-                .body(ErrorResponse.builder()
-                        .error(HttpStatus.FORBIDDEN.toString())
-                        .message(exception.getMessage())
-                        .build());
+        return buildErrorResponse(HttpStatus.FORBIDDEN, exception.getMessage());
     }
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<ErrorResponse> resolveException(UnauthorizedException exception) {
-        return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
-                .body(ErrorResponse.builder()
-                        .error(HttpStatus.UNAUTHORIZED.toString())
-                        .message(exception.getMessage())
-                        .build());
+        return buildErrorResponse(HttpStatus.UNAUTHORIZED, exception.getMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -94,12 +58,7 @@ public class GlobalExceptionHandler {
             messages.add(String.format("%s: %s",error.getField(), error.getDefaultMessage()));
         }
 
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(ErrorResponse.builder()
-                        .error(HttpStatus.BAD_REQUEST.toString())
-                        .message(messages.toString())
-                        .build());
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, messages.toString());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -110,34 +69,19 @@ public class GlobalExceptionHandler {
                 Objects.requireNonNull(exception.getRequiredType()).getSimpleName()
         );
 
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(ErrorResponse.builder()
-                        .error(HttpStatus.BAD_REQUEST.toString())
-                        .message(message)
-                        .build());
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, message);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(PropertyReferenceException.class)
     public ResponseEntity<ErrorResponse> resolveException(PropertyReferenceException exception) {
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(ErrorResponse.builder()
-                        .error(HttpStatus.BAD_REQUEST.toString())
-                        .message(exception.getMessage())
-                        .build());
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponse> resolveException(HttpMessageNotReadableException exception) {
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(ErrorResponse.builder()
-                        .error(HttpStatus.BAD_REQUEST.toString())
-                        .message(exception.getMessage())
-                        .build());
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 
     // TODO
@@ -146,20 +90,22 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> resolveException(HttpRequestMethodNotSupportedException exception) {
         String message = "Method '" + exception.getMethod() + "' not supported.";
 
-        return ResponseEntity
-                .status(HttpStatus.METHOD_NOT_ALLOWED)
-                .body(ErrorResponse.builder()
-                        .error(HttpStatus.METHOD_NOT_ALLOWED.toString())
-                        .message(message)
-                        .build());
+        return buildErrorResponse(HttpStatus.METHOD_NOT_ALLOWED, exception.getMessage());
     }
 
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleAllExceptions(Exception exception) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
+    }
+
+
+    private ResponseEntity<ErrorResponse> buildErrorResponse(HttpStatus status, String message) {
+        return ResponseEntity
+                .status(status)
                 .body(ErrorResponse.builder()
-                        .error(HttpStatus.INTERNAL_SERVER_ERROR.toString())
-                        .message(exception.getMessage())
+                        .error(status.toString())
+                        .message(message)
                         .build());
     }
 }

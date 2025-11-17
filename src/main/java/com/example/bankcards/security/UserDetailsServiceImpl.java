@@ -4,6 +4,7 @@ import com.example.bankcards.entity.User;
 import com.example.bankcards.exception.ResourceNotFoundException;
 import com.example.bankcards.exception.UnauthorizedException;
 import com.example.bankcards.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,9 +14,9 @@ import org.springframework.stereotype.Service;
 import static com.example.bankcards.util.AppConst.*;
 
 @Service
+@RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String phoneNumber) throws UsernameNotFoundException {

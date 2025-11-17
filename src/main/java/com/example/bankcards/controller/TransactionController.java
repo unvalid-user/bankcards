@@ -9,6 +9,7 @@ import com.example.bankcards.dto.filter.TransactionFilter;
 import com.example.bankcards.security.UserPrincipal;
 import com.example.bankcards.service.TransactionService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,11 +23,10 @@ import static com.example.bankcards.util.AppConst.DEFAULT_PAGE_SIZE;
 
 @RequestMapping("/transactions")
 @RestController
+@RequiredArgsConstructor
 public class TransactionController {
-    @Autowired
-    private TransactionService transactionService;
-    @Autowired
-    private TransactionMapper transactionMapper;
+    private final TransactionService transactionService;
+    private final TransactionMapper transactionMapper;
 
 
     @GetMapping()

@@ -14,6 +14,7 @@ import com.example.bankcards.security.UserPrincipal;
 import com.example.bankcards.service.CardOperationService;
 import com.example.bankcards.service.CardService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,15 +34,12 @@ import static com.example.bankcards.util.AppConst.DEFAULT_PAGE_SIZE;
 
 @RestController
 @RequestMapping("/cards")
+@RequiredArgsConstructor
 public class CardController {
-    @Autowired
-    private CardService cardService;
-    @Autowired
-    private CardOperationService cardOperationService;
-    @Autowired
-    private CardMapper cardMapper;
-    @Autowired
-    private CardOperationMapper cardOperationMapper;
+    private final CardService cardService;
+    private final CardOperationService cardOperationService;
+    private final CardMapper cardMapper;
+    private final CardOperationMapper cardOperationMapper;
 
     @GetMapping("/{id}")
     public ResponseEntity<CardResponse> getCardById(

@@ -9,6 +9,7 @@ import com.example.bankcards.entity.User;
 import com.example.bankcards.dto.filter.UserFilter;
 import com.example.bankcards.service.UserService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,12 +27,10 @@ import static com.example.bankcards.util.AppConst.DEFAULT_PAGE_SIZE;
 @RestController
 @RequestMapping("/users")
 @Secured("ROLE_ADMIN")
+@RequiredArgsConstructor
 public class UserController {
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private UserMapper userMapper;
-
+    private final UserService userService;
+    private final UserMapper userMapper;
 
     @PostMapping
     public ResponseEntity<UserResponse> createUser(

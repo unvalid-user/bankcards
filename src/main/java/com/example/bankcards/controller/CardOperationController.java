@@ -6,6 +6,7 @@ import com.example.bankcards.dto.mapper.CardOperationMapper;
 import com.example.bankcards.entity.card_operation.CardOperation;
 import com.example.bankcards.dto.filter.CardOperationFilter;
 import com.example.bankcards.service.CardOperationService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,11 +20,10 @@ import static com.example.bankcards.util.AppConst.DEFAULT_PAGE_SIZE;
 @RestController
 @RequestMapping("/card-operations")
 @Secured("ROLE_ADMIN")
+@RequiredArgsConstructor
 public class CardOperationController {
-    @Autowired
-    private CardOperationService cardOperationService;
-    @Autowired
-    private CardOperationMapper cardOperationMapper;
+    private final CardOperationService cardOperationService;
+    private final CardOperationMapper cardOperationMapper;
 
 
     @PatchMapping("/{id}/cancel")

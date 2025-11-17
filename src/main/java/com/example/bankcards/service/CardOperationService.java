@@ -10,6 +10,7 @@ import com.example.bankcards.repository.BlockCardOperationRepository;
 import com.example.bankcards.repository.CardOperationRepository;
 import com.example.bankcards.dto.filter.CardOperationFilter;
 import com.example.bankcards.repository.specification.CardOperationSpecifications;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,13 +22,11 @@ import java.util.Objects;
 import static com.example.bankcards.util.AppConst.*;
 
 @Service
+@RequiredArgsConstructor
 public class CardOperationService {
-    @Autowired
-    private CardOperationRepository cardOperationRepository;
-    @Autowired
-    private BlockCardOperationRepository blockCardOperationRepository;
-    @Autowired
-    private CardService cardService;
+    private final CardOperationRepository cardOperationRepository;
+    private final BlockCardOperationRepository blockCardOperationRepository;
+    private final CardService cardService;
 
     public BlockCardOperation createBlockCardOperation(Long cardId, Long userId) {
         Card card = cardService.findCardById(cardId);

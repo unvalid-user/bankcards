@@ -4,6 +4,7 @@ import com.example.bankcards.dto.request.LoginRequest;
 import com.example.bankcards.security.JwtAuthResponse;
 import com.example.bankcards.security.JwtTokenProvider;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,11 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")
+@RequiredArgsConstructor
 public class AuthController {
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
-    @Autowired
-    private AuthenticationManager authManager;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final AuthenticationManager authManager;
 
     @PostMapping("/sign-in")
     public ResponseEntity<JwtAuthResponse> authenticateUser(

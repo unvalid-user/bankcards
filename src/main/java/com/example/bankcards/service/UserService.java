@@ -8,6 +8,7 @@ import com.example.bankcards.exception.ResourceNotFoundException;
 import com.example.bankcards.repository.UserRepository;
 import com.example.bankcards.dto.filter.UserFilter;
 import com.example.bankcards.repository.specification.UserSpecifications;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,13 +19,11 @@ import org.springframework.stereotype.Service;
 import static com.example.bankcards.util.AppConst.*;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private RoleService roleService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final RoleService roleService;
+    private final PasswordEncoder passwordEncoder;
 
 
     public User findUserByPhoneNumber(String phoneNumber) {

@@ -26,19 +26,23 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
         securedEnabled = true
 )
 public class SecurityConfig {
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
-    @Autowired
-    private JwtAuthFilter jwtAuthFilter;
-    @Autowired
-    private AuthenticationEntryPointImpl authenticationEntryPoint;
-    @Autowired
-    private AccessDeniedHandlerImpl accessDeniedHandler;
+    private final UserDetailsServiceImpl userDetailsService;
+    private final JwtAuthFilter jwtAuthFilter;
+    private final AuthenticationEntryPointImpl authenticationEntryPoint;
+    private final AccessDeniedHandlerImpl accessDeniedHandler;
+    private final HandlerExceptionResolver resolver;
 
-    @Autowired
-    @Qualifier("handlerExceptionResolver")
-    private HandlerExceptionResolver resolver;
-
+    public SecurityConfig(UserDetailsServiceImpl userDetailsService,
+                          JwtAuthFilter jwtAuthFilter,
+                          AuthenticationEntryPointImpl authenticationEntryPoint,
+                          AccessDeniedHandlerImpl accessDeniedHandler,
+                          @Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver) {
+        this.userDetailsService = userDetailsService;
+        this.jwtAuthFilter = jwtAuthFilter;
+        this.authenticationEntryPoint = authenticationEntryPoint;
+        this.accessDeniedHandler = accessDeniedHandler;
+        this.resolver = resolver;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

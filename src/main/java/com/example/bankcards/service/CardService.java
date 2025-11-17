@@ -6,16 +6,20 @@ import com.example.bankcards.dto.mapper.CardMapper;
 import com.example.bankcards.entity.Card;
 import com.example.bankcards.entity.CardStatus;
 import com.example.bankcards.exception.BadRequestException;
+import com.example.bankcards.exception.ConflictException;
 import com.example.bankcards.exception.ResourceNotFoundException;
 import com.example.bankcards.repository.CardRepository;
 import com.example.bankcards.dto.filter.CardFilter;
 import com.example.bankcards.repository.specification.CardSpecifications;
 import com.example.bankcards.util.Encryptor;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -23,15 +27,12 @@ import java.math.BigDecimal;
 import static com.example.bankcards.util.AppConst.*;
 
 @Service
+@RequiredArgsConstructor
 public class CardService {
-    @Autowired
-    private CardRepository cardRepository;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private CardMapper cardMapper;
-    @Autowired
-    private Encryptor encryptor;
+    private final CardRepository cardRepository;
+    private final UserService userService;
+    private final CardMapper cardMapper;
+    private final Encryptor encryptor;
 
 
     public Card findCardByIdAndUser(Long cardId, Long userId) {
@@ -75,15 +76,19 @@ public class CardService {
         return getCardsWithFilter(pageable, filter);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void deleteCardById(Long cardId) {
         Card card = findCardById(cardId);
-        // TODO: should server delete card with balance > 0?
+        if (card.getBalance().compareTo(BigDecimal.ZERO) != 0)
+            throw new ConflictException("Cannot delete card with positive balance");
+
         cardRepository.delete(card);
 
         if (cardRepository.existsById(cardId))
             throw new IllegalStateException("Card was not deleted for some reason");
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Card updateCard(Long cardId, UpdateCardRequest updateCardRequest) {
         Card card = findCardById(cardId);
         cardMapper.updateCardFromDto(updateCardRequest, card);
@@ -91,7 +96,7 @@ public class CardService {
         return cardRepository.save(card);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void transferMoney(Long sourceCardId, Long destinationCardId, BigDecimal monetaryAmount, Long userId) {
         if (sourceCardId == destinationCardId) {
             throw new BadRequestException("Cannot transfer money to the same card");

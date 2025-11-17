@@ -23,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 public class CardServiceTest {
     @Mock
@@ -150,7 +149,7 @@ public class CardServiceTest {
     }
 
     @Test
-    void transferMoney_shouldThrowWhenIdsEquals() {
+    void transferMoney_shouldThrowWhenIdsEqual() {
         Long sourceCardId = 4L;
         Long destinationCardId = 4L;
         BigDecimal monetaryAmount = BigDecimal.valueOf(100.55);

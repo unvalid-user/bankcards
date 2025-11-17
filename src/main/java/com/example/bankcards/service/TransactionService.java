@@ -6,6 +6,7 @@ import com.example.bankcards.exception.ResourceNotFoundException;
 import com.example.bankcards.repository.TransactionRepository;
 import com.example.bankcards.dto.filter.TransactionFilter;
 import com.example.bankcards.repository.specification.TransactionSpecifications;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,11 +17,10 @@ import static com.example.bankcards.util.AppConst.ID;
 import static com.example.bankcards.util.AppConst.TRANSACTION;
 
 @Service
+@RequiredArgsConstructor
 public class TransactionService {
-    @Autowired
-    private TransactionRepository transactionRepository;
-    @Autowired
-    private CardService cardService;
+    private final TransactionRepository transactionRepository;
+    private final CardService cardService;
 
     public Page<Transaction> getTransactionsByUserId(Pageable pageable, TransactionFilter filter, Long userId) {
         filter.setUserId(userId);
